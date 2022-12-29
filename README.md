@@ -85,7 +85,7 @@ a) Install `pre-commit`: `pip install pre-commit`
 
 b) Create a configuration file `.pre-commit-config.yaml` in the root folder of your repo, which describes the steps to perform before applying each commit. My configuration is:
 
-```
+```yaml
 repos:
 -   repo: https://github.com/pycqa/isort
     rev: 5.11.2
@@ -131,7 +131,7 @@ d) Check how it works -- after each `git commit`, `pre-commit` runs all the tool
 
 An example output:
 ```bash
-(venv)  ◰³ venv  ~/D/c/p/ml_playground   *+  git commit -a -m "Initialization"                            Thu 29 Dec 2022 09:45:59 PM CET
+(venv)  git commit -a -m "Initialization"                            Thu 29 Dec 2022 09:45:59 PM CET
 [INFO] Initializing environment for https://github.com/pycqa/flake8.
 [INFO] Installing environment for https://github.com/pycqa/isort.
 [INFO] Once installed this environment will be reused.
@@ -150,9 +150,9 @@ mypy.................................................(no files to check)Skipped
 A list of some cool pre-commit hooks can be found [here](https://towardsdatascience.com/4-pre-commit-plugins-to-automate-code-reviewing-and-formatting-in-python-c80c6d2e9f5)
 
 I use:
-* Flake8: code linter to check if the code follows [PEP8](https://peps.python.org/pep-0008/) style guide
-* MyPy: static typing verifier
-* isort: to sort my imports appropriately
-* black: to autoformat my code
-* interrogate: to check if all my pieces of code are documented
-* pytest: to run tests
+* [flake8](https://flake8.pycqa.org/en/latest/): code linter to check if the code follows [PEP8](https://peps.python.org/pep-0008/) style guide
+* [mypy](https://mypy-lang.org/): static typing verifier
+* [isort](https://pycqa.github.io/isort/): to sort my imports appropriately
+* [black](https://black.readthedocs.io/en/stable/): to autoformat my code
+* [interrogate](https://interrogate.readthedocs.io/en/latest/): to check if all my pieces of code are documented
+* [pytest](docs.pytest.org): to run tests
