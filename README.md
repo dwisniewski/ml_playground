@@ -131,3 +131,5 @@ mypy.................................................(no files to check)Skipped
 [main 81450a8] Initialization
  1 file changed, 9 insertions(+)
 ```
+
+A list of some cool pre-commit hooks can be found [here](https://towardsdatascience.com/4-pre-commit-plugins-to-automate-code-reviewing-and-formatting-in-python-c80c6d2e9f5)
