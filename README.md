@@ -25,7 +25,12 @@ As you develop your own project and add external dependencies, it is a good idea
 
 When you install a package, e.g., `pandas` via `pip install pandas` you can update your `requirements.txt` using the following command `pip freeze | grep pandas >> requirements.txt`. `pip freeze` lists packages with their versions, grep selects the one relating to pandas and stores it at the end of requirements file.
 
-### Step 2: (DVC) Handling big files (models, datasets)
+### Step 2: Listing files to ignore
+If your project creates some files you don't want to track, create a `.gitignore` file and list the files/folders to ignore (e.g., `*.pyc` to ignore all `pyc` files).
+
+You can read more about `.gitignore` files [here](https://www.atlassian.com/git/tutorials/saving-changes/gitignore)
+
+### Step 3: (DVC) Handling big files (models, datasets)
 Context: [Documentation](https://dvc.org/)
 
 Git is not good at handling large files. Especially binary files (e.g., ML models) for which diffs don't make sense. For this reason we can use `DVC` to store large files outside of git while tracking their versions and changes.
@@ -71,7 +76,7 @@ git commit -m "Add data"
 
 Then, even if we delete the actual file, we can use `dvc pull` to download the files from storage or `dvc push` to upload to storage. These files are frequently used with `git pull/push` commands.
 
-### Step 3: (pre-commit) Encorcing coding workflow
+### Step 4: (pre-commit) Encorcing coding workflow
 Frequently, we forget about assuring good quality of the code we push to repositories. Using pre-commit Git hooks may force to apply some procedures at the moment of creating each commit. To achieve that, a simple approach is to use `pre-commit` framework.
 
 Context: [Documentation](https://pre-commit.com/)
