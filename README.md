@@ -156,3 +156,51 @@ I use:
 * [black](https://black.readthedocs.io/en/stable/): to autoformat my code
 * [interrogate](https://interrogate.readthedocs.io/en/latest/): to check if all my pieces of code are documented
 * [pytest](docs.pytest.org): to run tests
+
+
+### Step 5: pyproject.toml: Common project configuration
+
+### Step 6: (direnv) Environment variables autoloadding from file
+
+Context: [Documentation](https://direnv.net/)
+
+Some projects use environment variables to store important configuration data. 
+We can use direnv to load those variables every time we enter a given folder (and "unload" them if we move to another one).
+
+a) Install direnv: `curl -sfL https://direnv.net/install.sh | bash`
+b) [Hook into your shell](https://direnv.net/docs/hook.html)
+c) Store your variables into `.envrc` file (remember to add it to `.gitignore` as it may contain data that you should not share!)
+
+```bash
+# Create a new folder for demo purposes.
+$ mkdir ~/my-project
+$ cd ~/my-project
+
+# Show that the FOO environment variable is not loaded.
+$ echo ${FOO-nope}
+nope
+
+# Create a new .envrc. This file is bash code that is going to be loaded by
+# direnv.
+$ echo export FOO=foo > .envrc
+.envrc is not allowed
+
+# The security mechanism didn't allow to load the .envrc. Since we trust it,
+# let's allow its execution.
+$ direnv allow .
+direnv: reloading
+direnv: loading .envrc
+direnv export: +FOO
+
+# Show that the FOO environment variable is loaded.
+$ echo ${FOO-nope}
+foo
+
+# Exit the project
+$ cd ..
+direnv: unloading
+
+# And now FOO is unset again
+$ echo ${FOO-nope}
+nope
+```
