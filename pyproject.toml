@@ -2,3 +2,24 @@
 pythonpath = [
   "."
 ]
+
+[tool.black]
+line-length = 79
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv6
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[flake8]
+max-line-length = 79
+max-complexity = 18

@@ -1,3 +1,5 @@
 dvc==2.38.1
 pytest==7.2.0
 pandas==1.5.2
+black==22.12.0
+pre-commit==2.21.0
