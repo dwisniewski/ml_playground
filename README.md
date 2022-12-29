@@ -106,6 +106,21 @@ repos:
     hooks:
     -   id: mypy
         additional_dependencies: [tokenize-rt==3.2.0]
+- repo: https://github.com/econchick/interrogate
+  rev: 1.5.0  
+  hooks:
+    - id: interrogate
+      args: [--vv, -i, --fail-under=80]
+- repo: local
+  hooks:
+    - id: pytest-check
+      name: pytest-check
+      stages: [commit]
+      types: [python]
+      entry: pytest
+      language: system
+      pass_filenames: false
+      always_run: true 
 ```
 
 This config lists all the tools to use, their repository names and optional parameters. Note: `pre-commit` creates a separate `venv` in which it uses the tools.
@@ -133,3 +148,11 @@ mypy.................................................(no files to check)Skipped
 ```
 
 A list of some cool pre-commit hooks can be found [here](https://towardsdatascience.com/4-pre-commit-plugins-to-automate-code-reviewing-and-formatting-in-python-c80c6d2e9f5)
+
+I use:
+* Flake8: code linter to check if the code follows [PEP8](https://peps.python.org/pep-0008/) style guide
+* MyPy: static typing verifier
+* isort: to sort my imports appropriately
+* black: to autoformat my code
+* interrogate: to check if all my pieces of code are documented
+* pytest: to run tests
