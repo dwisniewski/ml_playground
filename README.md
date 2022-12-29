@@ -1,5 +1,5 @@
-# ml_playground: A sample ML project configured "right" :)
-## this configuration assures less pain in the future
+# ml_playground: Sample ML project configured "right"
+This configuration assures less pain in the future
 
 ### Step 0: (venv) Install and run VirtualEnv
 Context: [Documentation](https://virtualenv.pypa.io/en/latest/)
