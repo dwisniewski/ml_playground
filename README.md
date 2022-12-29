@@ -143,6 +143,8 @@ isort (python).......................................(no files to check)Skipped
 black................................................(no files to check)Skipped
 flake8...............................................(no files to check)Skipped
 mypy.................................................(no files to check)Skipped
+interrogate..........................................(no files to check)Skipped
+pytest-check.............................................................Passed
 [main 81450a8] Initialization
  1 file changed, 9 insertions(+)
 ```
