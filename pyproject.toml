@@ -1,3 +1,7 @@
+# to use black/mypy/flake8 I use pre-commit: 
+# https://ljvmiranda921.github.io/notebook/2018/06/21/precommits-using-black-and-flake8/
+
+
 [tool.pytest.ini_options]
 pythonpath = [
   "."
@@ -23,3 +27,6 @@ exclude = '''
 [flake8]
 max-line-length = 79
 max-complexity = 18
+
+[tool.isort]
+profile = "black"  # see: https://pycqa.github.io/isort/docs/configuration/black_compatibility.html
