@@ -1,5 +1,5 @@
-# ml_playground: A sample ML project configured "right" :)
-## this configuration assures less pain in the future
+# ml_playground: Sample ML project configured "right"
+This configuration assures less pain in the future
 
 ### Step 0: (venv) Install and run VirtualEnv
 Context: [Documentation](https://virtualenv.pypa.io/en/latest/)
@@ -143,6 +143,8 @@ isort (python).......................................(no files to check)Skipped
 black................................................(no files to check)Skipped
 flake8...............................................(no files to check)Skipped
 mypy.................................................(no files to check)Skipped
+interrogate..........................................(no files to check)Skipped
+pytest-check.............................................................Passed
 [main 81450a8] Initialization
  1 file changed, 9 insertions(+)
 ```
