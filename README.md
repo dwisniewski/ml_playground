@@ -1,29 +1,52 @@
 # ml_playground: Sample ML project configured "right"
 This configuration assures less pain in the future
 
-### Step 0: (venv) Install and run VirtualEnv
-Context: [Documentation](https://virtualenv.pypa.io/en/latest/)
+### Step 1: Manage requirements with Poetry (better than virtualenv + pip install)
+Context: [Short 3 minutes video intro](https://www.youtube.com/watch?v=V7UhzA4g2yg) [Documentation](https://python-poetry.org/) [Tutorial](https://python-poetry.org/docs/basic-usage/)
 
-In order to separate dependencies per-project, it's good to create local virtual environments so that all requirements are loaded from it. This assures that various projects can use different package versions.
+Classically, we manually managed all packages that were required by our projects. Using the `pip` tool, for example, we could download and install packages, such as pandas via `pip install pandas` or even restrict an installation providing a specific version, e.g., `pip install pandas==1.5.2`.
 
-a) Install virtualenv: `python -m pip install --user virtualenv`
+However, as APIs of these tools frequently evolve, we had to list all of our libraries along with their versions in a file that any other person could reuse to install the same versions of packages as we used to ensure that the code works fine. We could create a file named `requirements.txt` with a list of all requirements and upload it into `GitHub` so that the installation of all packages would require running only the `pip install -r requirements.txt` command. 
 
-b) Create local environment called `venv`: `virtualenv venv`
+However, managing `requirements.txt` was frequently a manual task forcing us, e.g., to run `pip freeze | TOOLNAME >> requirements.txt` to append the file with an entry consisting of a pair of a TOOLNAME's name and its version that we installed on our computer -- it was easy to forget about it.
 
-c) Switch into `venv`: `source venv/bin/activate`
+Moreover, developing various projects, we could face a situation in which `project A` requires `pandas` in version `1.5.2` and `project B` required it in version `0.9.2`. How to deal with it when by default `python` installs packages globally and allows us to have only one version of a package? We used `virtualenv` to create separate virtual environments for each project. In each virtual environment, one could install all dependencies locally so that `project A` could use different versions than `project B`.
+Both `pip` and `virtualenv` requires us to remember multiple steps:
 
-If you use `fish` you may need to run: `. venv/bin/activate.fish` instead.
+`virtualenv venv` -- to initialize virtualenv named `venv` at the beginning of our work with the project
+`source venv/bin/activate` -- to use virtualenv named `venv` every time we start to work on a project
+`pip install PACKAGE` -- to install a package 
+`pip freeze | grep PACKAGE >> requirements.txt` -- to add the PACKAGE with its version to the `requirements.txt` file
+`deactivate` -- to exit virtualenv
 
-To deactivate `venv` simply type `deactivate` in your terminal emulator.
 
-### Step 1: Requirements installation
-Requirements for existing projects are most frequently listed in `requirements.txt` file in the main folder of the repository.
+To help us, `poetry` was developed. It manages `virtualenv`s and automatically keeps track of the tools we install so that we don't have to enable virtualenvs manually nor remember to update the `requirements.txt` file.
 
-You can install all dependencies by typing: `pip install -r <requirements.file>` e.g., `pip install -r requirements.txt`
+To use `poetry`, we need to install it first: `pip install poetry`, then I would recommend setting `poetry config virtualenvs.in-project true` to force `poetry` to create virtual environments in the project`s folder (otherwise it creates them in a common folder).
 
-As you develop your own project and add external dependencies, it is a good idea to update your `requirements.txt` file adding packages with appropriate version tags. As dependencies evolve, their behaviour (e.g., API) may change, so it is really important to store package versions along package names in `requirements.txt` file to make sure that everyone uses expected versions.
 
-When you install a package, e.g., `pandas` via `pip install pandas` you can update your `requirements.txt` using the following command `pip freeze | grep pandas >> requirements.txt`. `pip freeze` lists packages with their versions, grep selects the one relating to pandas and stores it at the end of requirements file.
+1) We may use `poetry new PROJECTNAME` to create a basic project structure:
+```bash
+poetry-demo
+├── pyproject.toml
+├── README.md
+├── poetry_demo
+│   └── __init__.py
+└── tests
+    └── __init__.py
+```
+
+The most important file here is `pyproject.toml`, which is recently suggested as the core settings file used to build packages. You can read more about it in a nice [blogpost](https://betterprogramming.pub/a-pyproject-toml-developers-cheat-sheet-5782801fb3ed) or more in-depth in [PEP 518](https://peps.python.org/pep-0518/). In short, `pyproject.toml` helps us to publish python projects and stores metadata as well as information about dependencies.
+
+ **IMPORTANT!** If you already have a project structure, you can use `poetry init` so that only `pyproject.toml` will be created.
+ 
+2) Enable virtualenv with `poetry env use python3.10` if you have `python3.10` installed on your computer, otherwise, choose your version. Once you do this, you don't have to remember to activate or deactivate virtual environments -- `poetry` will do it for you!
+
+3) Install dependencies, e.g., using `poetry add pandas` or `poetry add pandas@1.5.2` if you need a specific version. Viola! `pandas` is installed and the information about the package is automatically added to `pyproject.toml` and `poetry.lock` ([why?](https://betterdev.blog/pin-exact-dependency-versions/)) so you don't have to update `requirements.txt` manually.
+
+4) If you download a repository and want to install all dependencies use the `poetry install` command in the project folder.
+
+
 
 ### Step 2: Listing files to ignore
 If your project creates some files you don't want to track, create a `.gitignore` file and list the files/folders to ignore (e.g., `*.pyc` to ignore all `pyc` files).
@@ -33,7 +56,7 @@ You can read more about `.gitignore` files [here](https://www.atlassian.com/git/
 ### Step 3: (DVC) Handling big files (models, datasets)
 Context: [Documentation](https://dvc.org/)
 
-Git is not good at handling large files. Especially binary files (e.g., ML models) for which diffs don't make sense. For this reason we can use `DVC` to store large files outside of git while tracking their versions and changes.
+Git is not good at handling large files. Especially binary files (e.g., ML models) for which diffs don't make sense. For this reason, we can use `DVC` to store large files outside of git while tracking their versions and changes.
 
 [Detailed instructions](https://dvc.org/doc/start/data-management/data-versioning)
 
@@ -65,7 +88,7 @@ git commit -m "[DVC] Remote initialization"
 
 Now we can manage our data with DVC.
 
-To track a file or directory with DVC use: `dvc add PATH_OR_DIR` e.g., `dvc add dataset/data.gz`
+To track a file or directory with DVC use: `dvc add PATH_OR_DIR`, e.g., `dvc add dataset/data.gz`
 As a result, DVC creates `*.dvc` file which will be versioned in GIT. However the actual files will be stored in `mystorage` and `*.dvc` file helps us to identify which file from storage we need.
 
 Let's add those metadata to Git: 
@@ -157,7 +180,7 @@ I use:
 * [isort](https://pycqa.github.io/isort/): to sort my imports appropriately
 * [black](https://black.readthedocs.io/en/stable/): to autoformat my code
 * [interrogate](https://interrogate.readthedocs.io/en/latest/): to check if all my pieces of code are documented
-* [pytest](docs.pytest.org): to run tests
+* [pytest](docs.pytest.org): to run tests (this one is controversial as many programmers prefer to test code serverside. I start with local verification and when the tests are becoming heavy move pytest to server-side CI/CD pipeline).
 
 
 ### Step 5: pyproject.toml: Common project configuration
@@ -169,8 +192,12 @@ Context: [Documentation](https://direnv.net/)
 Some projects use environment variables to store important configuration data. 
 We can use direnv to load those variables every time we enter a given folder (and "unload" them if we move to another one).
 
+These way we can forget about exporting, e.g., AWS credentials every computer reboot.
+
 a) Install direnv: `curl -sfL https://direnv.net/install.sh | bash`
+
 b) [Hook into your shell](https://direnv.net/docs/hook.html)
+
 c) Store your variables into `.envrc` file (remember to add it to `.gitignore` as it may contain data that you should not share!)
 
 ```bash
